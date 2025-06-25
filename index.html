@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gantsaaraa Official</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f8;
+      color: #333;
+    }
+    header {
+      background: #2b2d42;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+    nav a {
+      margin: 0 1rem;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    main {
+      padding: 2rem;
+      text-align: center;
+    }
+    .btn {
+      background: #ef476f;
+      color: white;
+      padding: 1rem 2rem;
+      margin: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    .form-section, .messages-section {
+      margin: 2rem auto;
+      max-width: 600px;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: left;
+    }
+    .form-section input, .form-section textarea, .form-section select {
+      width: 100%;
+      margin-bottom: 1rem;
+      padding: 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    .message {
+      background: #fcefee;
+      border-left: 6px solid #ef476f;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #ddd;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>gantsaaraaofficial</h1>
+    <nav>
+      <a href="#read">Read Messages</a>
+      <a href="#submit">Write a Message</a>
+    </nav>
+  </header>
+  <main>
+    <h2>You are not alone.</h2>
+    <p>Read real, anonymous messages from others or share your own thoughts.</p>
+    <button class="btn" onclick="location.href='#read'">Read Messages</button>
+    <button class="btn" onclick="location.href='#submit'">Write a Message</button>
+
+    <section id="submit" class="form-section">
+      <h3>Write Your Message</h3>
+      <form id="messageForm">
+        <textarea name="message" rows="5" placeholder="Write your thoughts..." required></textarea>
+        <select name="tag">
+          <option value="">Select a feeling</option>
+          <option value="Lonely">Lonely</option>
+          <option value="Hopeful">Hopeful</option>
+          <option value="Angry">Angry</option>
+          <option value="Heartbroken">Heartbroken</option>
+          <option value="Grateful">Grateful</option>
+        </select>
+        <button type="submit" class="btn">Submit</button>
+      </form>
+    </section>
+
+    <section id="read" class="messages-section">
+      <h3>Anonymous Messages</h3>
+      <div id="messagesContainer">
+        <!-- Messages will appear here -->
+      </div>
+    </section>
+  </main>
+  <footer>
+    &copy; 2025 gantsaaraaofficial. Made with care.
+  </footer>
+  <script>
+    const form = document.getElementById('messageForm');
+    const container = document.getElementById('messagesContainer');
+    const stored = JSON.parse(localStorage.getItem('gantsaaraa_messages')) || [];
+
+    function renderMessages() {
+      container.innerHTML = stored.map(msg => `
+        <div class="message">
+          <p>${msg.text}</p>
+          <small style="color: #555;">#${msg.tag}</small>
+        </div>
+      `).join('');
+    }
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const text = form.message.value.trim();
+      const tag = form.tag.value;
+      if (text) {
+        stored.unshift({ text, tag });
+        localStorage.setItem('gantsaaraa_messages', JSON.stringify(stored));
+        form.reset();
+        renderMessages();
+        alert('Your message was submitted anonymously.');
+      }
+    });
+
+    renderMessages();
+  </script>
+</body>
+</html>
